@@ -1,0 +1,63 @@
+html {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 3.5rem;
+    margin: 0;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 1.25rem;
+    margin: 0;
+    margin-bottom: 2rem;
+}
+
+h3 {
+   font-size: 1rem; 
+   line-height: 1.5;
+    margin: 0;
+}
+
+.section-1 {
+    background-image: url(/section-1-image.jpg);
+    background-size: cover;
+    height: 80dvh;
+    position: relative;
+}
+
+.section-1-dark-overlay-div {
+    background-color: rgba(0, 0, 0, 0.8);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+.section-1 img {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0.5rem;
+}
+
+.hero-section {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    text-align: center;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+form {
+    margin-top: 1rem;
+}
