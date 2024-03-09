@@ -187,7 +187,23 @@ h3 {
         padding-left: 1.5rem;
     }
 
+    .section-2 {
+        background-color: black;
+        padding: 2rem;
+        color: white;
+    }
+
     .reasons-to-join-boxes-container-div {
         display: flex;
+        justify-content: space-between;
+    }
+
+    .reasons-to-join-box {
+        padding: 1rem;
+        text-align: left;
+        background: linear-gradient(to bottom, #1a1e3e, #1f111e); /* Dark black to dark blue */
+        color: white;
+        border-radius: 0.25rem;
+        width: 20%;
     }
 }
