@@ -144,14 +144,14 @@ h3 {
         color: white;
         position: relative;
         max-width: 36.75rem;
-        padding-top: 0%;
+        padding-top: 9rem;
         box-sizing: border-box;
+        padding-bottom: 9rem;
     }
 
     form {
         margin-top: 1rem;
         display: flex;
-        padding-bottom: 1rem;
     }
 
     input {
@@ -176,11 +176,18 @@ h3 {
         margin-top: 0;
         margin-left: 0.5rem;
         font-size: 1.5rem;
-        padding: 0.5rem 1rem;
         background-color: red;
         border-radius: 0.25rem;
         border: 0;
         color: white;
         cursor: pointer;
+        padding-top: 0.75rem;
+        padding-right: 1.5rem;
+        padding-bottom: 0.75rem;
+        padding-left: 1.5rem;
+    }
+
+    .reasons-to-join-boxes-container-div {
+        display: flex;
     }
 }
