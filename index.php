@@ -17,7 +17,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interview People</title>
-    <meta name="description" content="Interview other people about certain topics and question them using AI generated questions">
+    <meta name="description"
+        content="Interview other people about certain topics and question them using AI generated questions">
     <link rel="icon" href="/logo.svg">
     <link rel="stylesheet" href="/style.css">
 </head>
@@ -29,19 +30,30 @@
             <section class="hero-section">
                 <h1>Interview other people about certain topics and question them using AI generated questions</h1>
                 <form id="myForm" method="post" action="">
-                    <input type="text" id="form-topic-input-id" name="form-topic-input-name" placeholder="Enter a topic" required>
-                    <input type="url" id="form-calendar-input-id" name="form-calendar-input-name" placeholder="Enter your full calendar link" required>
+                    <input type="text" id="form-topic-input-id" name="form-topic-input-name" placeholder="Enter a topic"
+                        required>
+                    <input type="url" id="form-calendar-input-id" name="form-calendar-input-name"
+                        placeholder="Enter your full calendar link" required>
                     <button type="button" onclick="validateAndSubmitForm()">Submit</button>
                 </form>
             </section>
             <div class="board-div">
                 board
                 <?php
-                // Connect to the database
-                $conn = new SQLite3('database.sqlite');
+                require_once 'vendor/autoload.php'; // Adjust the path as necessary
+                
+                use SQLiteCloud\SQLiteCloudClient;
+                use SQLiteCloud\SQLiteCloudRowset;
 
+                // Connect to SQLite Cloud
+                $sqlitecloud = new SQLiteCloudClient();
+                $sqlitecloud->connectWithString('process.env.SQLITECLOUD_CONNECTION_STRING');
+
+
+                $db_name = 'database.sqlite';
+                $sqlitecloud->execute("USE DATABASE {$db_name}");
                 // Create a table
-                $conn->exec('CREATE TABLE IF NOT EXISTS form_data (
+                $sqlitecloud->execute('CREATE TABLE IF NOT EXISTS form_data_table (
                     topic_column TEXT,
                     calendar_column TEXT
                 )');
@@ -52,27 +64,32 @@
                     $form_calendar_input = $_POST['form-calendar-input-name'];
 
                     // Insert data into the table
-                    $stmt = $conn->prepare("INSERT INTO form_data (topic_column, calendar_column) VALUES (:topic, :calendar)");
-                    $stmt->bindValue(':topic', $form_topic_input, SQLITE3_TEXT);
-                    $stmt->bindValue(':calendar', $form_calendar_input, SQLITE3_TEXT);
-                    $stmt->execute();
+                    $stmt = $sqlitecloud->execute("INSERT INTO form_data_table (topic_column, calendar_column) VALUES ('$form_topic_input', '$form_calendar_input')");
+
                 }
 
-                // Execute a SELECT query
-                $result = $conn->query("SELECT * FROM form_data");
+                // Select all data from the table and input it into a variable
+                $result = $sqlitecloud->execute("SELECT * FROM form_data_table");
 
-                // Build HTML table
-                echo "<table>";
-                while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+                // Assuming $result is already populated with data from the SQLiteCloudRowset object
+                $data = $result->data;
+                $colname = $result->colname;
+
+                echo "<table border='1'>";
+                echo "<tr><th>{$colname[0]}</th><th>{$colname[1]}</th></tr>"; // Table headers
+                
+                // Loop through the data array and populate the table rows
+                for ($i = 0; $i < count($data); $i += 2) {
                     echo "<tr>";
-                    echo "<td>I want to interview someone about " . $row['topic_column'] . "</td>";
-                    echo "<td><a target=\"_blank\" href=\"" . $row['calendar_column'] . "\">Book</a></td>";
+                    echo "<td>{$data[$i]}</td>"; // Topic
+                    echo "<td><a href='{$data[$i + 1]}'>{$data[$i + 1]}</a></td>"; // Calendar link
                     echo "</tr>";
                 }
+
                 echo "</table>";
 
                 // Close the connection
-                $conn->close();
+                $sqlitecloud->disconnect();
                 ?>
             </div>
         </div>
@@ -98,9 +115,9 @@
             const formData = new FormData(document.getElementById('myForm'));
 
             fetch('/', {
-                    method: 'POST',
-                    body: formData
-                })
+                method: 'POST',
+                body: formData
+            })
                 .then(response => {
                     if (response.ok) {
                         // Clear form fields
