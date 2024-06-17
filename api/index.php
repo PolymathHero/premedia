@@ -20,7 +20,7 @@
     <meta name="description"
         content="Interview other people about certain topics and question them using AI generated questions">
     <link rel="icon" href="/logo.svg">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/interviewsocial/style.css">
 </head>
 
 <body>
